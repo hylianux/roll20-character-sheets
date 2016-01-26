@@ -162,7 +162,7 @@
 						<input class="sheet-short" disabled="true" name=
 						"attr_melee_attack_bonus" title=
 						"(Strength Bonus + Level)" type="number" value=
-						"@{strength_bonus} + @{level}">
+						"">
 					</td>
 				</tr>
 				<tr>
@@ -171,7 +171,7 @@
 						<input class="sheet-short" disabled="true" name=
 						"attr_missile_attack_bonus" title=
 						"(Dexterity Bonus + Level)" type="number" value=
-						"@{dexterity_bonus} + @{level}">
+						"">
 					</td>
 				</tr>
 			</table>
@@ -199,13 +199,14 @@
 							<input class="sheet-short" name="attr_strength_modifier" title="(Miscellaneous Strength Modifier)" type="number" value="0">
 						</td>
 						<td>
-							<input class="sheet-short" name="attr_strength_current" disabled="true" value="@{strength}+@{strength_modifier}" type="number">
+							<input class="sheet-short" name="attr_strength_current" disabled="true" value="" type="number">
 						</td>
 						<td>
-							<input class="sheet-short" disabled="true" name="attr_strength_bonus" title="(Strength / 2 - Rounded down + Misc Modifier)" type="number" value="floor(((@{strength_current}) - 10) / 2)">
+							<input class="sheet-short" disabled="true" name="attr_strength_bonus" title="(Strength / 2 - Rounded down + Misc Modifier)" type="number" value="">
 						</td>
 						<td>
-							<button type="roll" value="&{template:default} {{name=Strength Roll}}{{Roll Result=[[d20+[[(@{strength_bonus})]]]]}}" title="d20 + strength bonus">
+							<input type="hidden" name="attr_strength_roll" />
+							<button type="roll" value="@{strength_roll}" title="d20 + strength bonus">
 							</button>
 						</td>
 					</tr>
@@ -216,10 +217,10 @@
 							<input class="sheet-short" name="attr_dexterity_modifier" title="(Miscellaneous Dexterity Modifier)" type="number" value="0">
 						</td>
 						<td>
-							<input class="sheet-short" name="attr_dexterity_current" disabled="true" value="@{dexterity}+@{dexterity_modifier}" type="number">
+							<input class="sheet-short" name="attr_dexterity_current" disabled="true" value="" type="number">
 						</td>
 						<td>
-							<input class="sheet-short" disabled="true" name="attr_dexterity_bonus" title="(Dexterity / 2 - Rounded down + Misc Modifier)" type="number" value="floor(((@{dexterity_current}) - 10) / 2)">
+							<input class="sheet-short" disabled="true" name="attr_dexterity_bonus" title="(Dexterity / 2 - Rounded down + Misc Modifier)" type="number" value="">
 						</td>
 						<td>
 							<button type="roll" value="&{template:default} {{name=Dexterity Roll}}{{Roll Result=[[d20+[[(@{dexterity_bonus})]]]]}}" title="d20 + dexterity bonus">
@@ -233,10 +234,10 @@
 							<input class="sheet-short" name="attr_mind_modifier" title="(Miscellaneous Mind Modifier)" type="number" value="0">
 						</td>
 						<td>
-							<input class="sheet-short" name="attr_mind_current" disabled="true" value="@{mind}+@{mind_modifier}" type="number">
+							<input class="sheet-short" name="attr_mind_current" disabled="true" value="" type="number">
 						</td>
 						<td>
-							<input class="sheet-short" disabled="true" name="attr_mind_bonus" title="(Mind / 2 - Rounded down + Misc Modifier)" type="number" value="floor(((@{mind_current}) - 10) / 2)">
+							<input class="sheet-short" disabled="true" name="attr_mind_bonus" title="(Mind / 2 - Rounded down + Misc Modifier)" type="number" value="">
 						</td>
 						<td>
 							<button type="roll" value="&{template:default} {{name=Mind Roll}}{{Roll Result=[[d20+[[(@{mind_bonus})]]]]}}" title="d20 + mind bonus">
@@ -271,9 +272,10 @@
 							<input type="number" name="attr_physical_mod" class="sheet-short" value="0">
 						</td>
 						<td>
-							<input type="number" disabled="true" name="attr_physical_current" class="sheet-short" value="@{physical}+@{physical_mod}">
+							<input type="number" disabled="true" name="attr_physical_current" class="sheet-short" value="">
 						</td>
 						<td>
+							<input type="hidden" name="attr_phys_strength_roll" />
 							<button type="roll" value="&{template:default} {{name=Physical+Str}} {{Roll Result=[[d20+[[(@{physical_current})]]+[[(@{strength_bonus})]]+[[(floor(@{race}))]]]]}}" title="d20 + physical rank + strength bonus + human racial bonus">
 							</button>
 						</td>
@@ -489,7 +491,8 @@
 				<tr>
 					<td><label title="Select your token before clicking to get added to the Turn Table">Initiative Roll</label></td>
 					<td>
-						<button type="roll" value="&{template:default} {{name=Initiative Roll}} {{Roll Result=[[d20+[[(@{dexterity_bonus})]] &{tracker}]]}}" title="d20 + Dexterity Bonus"></button>
+						<input type="hidden" name="attr_initiative_roll" />
+						<button type="roll" value="@{initiative_roll}" title="Initiative Roll"></button>
 					</td>
 				</tr>
 			</table>
@@ -508,16 +511,21 @@
 
 				<tbody>
 					<tr>
+						<input type="hidden" name="attr_fortitude_save_roll" />
 						<td><button type="roll" value=
-						"&{template:default} {{name=Fortitude Save }} {{Roll Result=[[d20+[[(@{physical_current})]]+[[(@{strength_bonus})]]+[[(floor(@{race}))]]+[[((floor(abs((-2+@{class}))/16))*(1+floor(@{level}/5)))]]]]}}" title="d20 + physical rank + strength bonus + human racial bonus + paladin bonus">
+						"@{fortitude_save_roll}" title="Fortitude Save">
 						</button></td>
 
-						<td><button type="roll" value=
-						"&{template:default} {{name=Reflex Save}} {{Roll Result=[[d20+[[(@{physical_current})]]+[[(@{dexterity_bonus})]]+[[(floor(@{race}))]]+[[((floor(abs((-2+@{class}))/16))*(1+floor(@{level}/5)))]]]]}}" title="d20 + physical rank + dexterity bonus + human racial bonus + paladin bonus">
+						<td>
+						<input type="hidden" name="attr_reflex_save_roll" />
+						<button type="roll" value=
+						"@{reflex_save_roll}" title="Reflex Save">
 						</button></td>
 
-						<td><button type="roll" value=
-						"&{template:default} {{name=Will Save}} {{Roll Result=[[d20+[[(@{mind_bonus})]]+[[(@{level})]]+[[(floor(@{race}))]]+[[((floor(abs((-2+@{class}))/16))*(1+floor(@{level}/5)))]]]]}}" title="d20 + mind bonus + level + human racial bonus + paladin bonus">
+						<td>
+						<input type="hidden" name="attr_will_save_roll" />
+						<button type="roll" value=
+						"@{will_save_roll}" title="Will Save">
 						</button></td>
 					</tr>
 				</tbody>
@@ -739,36 +747,187 @@
 		</div>
 	
 </div>
+<rolltemplate class="sheet-rolltemplate-attack">
+    <table>
+        <tr><th>{{name}}</th></tr>
+        <tr><td class="subheader">{{subtags}}</td></tr>
+        <tr class="arrow-container"><td><div class="arrow-right"></div></td></tr>
+		<tr class="rowcolor"><td><span class="tcat">Attack: </span>{{attack}} | {{attackadv}} vs AC</td></tr>
+		{{#damage}}
+			<tr>
+    		    <td>
+                     <span class="tcat">Damage: </span>{{damage}} 
+                     <span class="tcat">Crit: </span>{{dmgcrit}}
+                </td>
+		    </tr>
+		{{/damage}}
+        {{#snkattk}}
+    		<tr>
+    		    <td>
+                     <span class="tcat">Sneak Attack: </span>{{snkattk}} 
+                     <span class="tcat">Crit: </span>{{snkcrit}}
+                </td>
+		    </tr>
+		{{/snkattk}}
+    </table>
+</rolltemplate>
 <script type="text/worker">
 	
 	on("change:level", function(){
-		calculatePhysical();
-		calculateSubterfuge();
-		calculateKnowledge();
-		calculateCommunication();
-		calculateSurvival();
-		calculateAttacks();
-	};
+		setUpSkillFields();
+		setUpCasterDCField();
+		
+		setUpAttackRolls();
+		setUpSavingThrowRolls();
+	});
+	
+	on("change:caster_dc_mod", function(){
+		setUpCasterDCField();
+	});
 	
 	on("change:race", function(){
-		calculateStrength();
-		calculateDex();
-		calculateMind();
+		setUpStatFields();
+		setUpAttackBonusFields();
+		setUpSkillFields(); //skills would only ever change if you chose human
+		
+		setUpInitiativeRoll();
+		setUpStatRolls();
+		setUpAttackRolls();
+		setUpSavingThrowRolls();
+	});
+	
+	on("change:class", function(){
+		setUpSkillFields();
+		setUpAttackRolls(); //fighters and rangers are different
+		setUpSavingThrowRolls();
+	});
+	
+	on("change:armor_bonus change:armor_mod change:shield_bonus change:shield_mod", function(){
+		setUpACField();
 	});
 	
 	on("change:strength change:strength_modifier", function(){
-		calculateStrength();
+		setUpStrengthField();
+		setUpMeleeAttackBonusField();
+		
+		setUpStrengthRoll();
+		setUpAttackRolls();
+		setUpFortitudeSaveThrowRoll();
 	});
 	
 	on("change:dexterity change:dexterity_modifier", function(){
-		calculateDex();
+		setUpDexField();
+		setUpMissileAttackBonusField();
+		setUpACField();
+		
+		setUpDexRoll();
+		setUpAttackRolls();
+		setUpInitiativeRoll();
+		setUpReflexSaveThrowRoll();
 	});
 	
 	on("change:mind change:mind_modifier", function(){
-		calculateMind();
+		setUpMindField();
+		setUpCasterDCField();
+		
+		setUpMindRoll();
+		setUpWillSaveThrowRoll();
 	});
 	
-	var calculateStrength = function(){
+	var setUpAttackBonusFields = function(){
+		setUpMeleeAttackBonusField();
+		setUpMissileAttackBonusField();
+	};
+	
+	var setUpStatFields = function(){
+		setUpStrengthField();
+		setUpDexField();
+		setUpMindField();
+	};
+	
+	var setUpStatRolls = function(){
+		setUpStrengthRoll();
+		setUpDexRoll();
+		setUpMindRoll();
+	};
+	
+	var setUpSkillFields = function(){
+		setUpPhysicalField();
+		setUpSubterfugeField();
+		setUpKnowledgeField();
+		setUpCommunicationField();
+		setUpSurvivalField();
+	};
+	
+	var setUpAttackRolls = function(){
+		setUpToHitRolls();
+		setUpDamageRolls();
+	};
+	
+	var setUpToHitRolls = function(){
+		setUpMeleeRolls();
+		setUpMissileRolls();
+		setUpLightWeaponRolls();
+		setUpDualWieldRolls();
+	};
+	
+	var setUpSavingThrowRolls = function(){
+		setUpFortitudeSaveThrowRoll();
+		setUpReflexSaveThrowRoll();
+		setUpWillSaveThrowRoll();
+	};
+	
+	var setUpCasterDCField = function(){
+		getAttrs(["level", "mind_bonus", "caster_dc_mod"], function(values){
+			var bonus = (10+parseInt(values.level)+parseInt(values.mind_bonus)+parseInt(values.caster_dc_mod));
+			setAttrs(
+				{
+					"caster_dc" : bonus
+				}
+			);
+		});
+	};
+	
+	var setUpACField = function(){
+		/**
+			10 + @{dexterity_bonus} + @{armor_bonus} + @{armor_mod} + @{shield_bonus} + @{shield_mod}
+		*/
+		
+		getAttrs(["dexterity_bonus", "armor_bonus", "armor_mod", "shield_bonus", "shield_mod"], function(values){
+			var bonus = (10+parseInt(values.dexterity_bonus)+parseInt(values.armor_bonus)+parseInt(values.armor_mod)+parseInt(values.shield_bonus)+parseInt(values.shield_mod));
+			setAttrs(
+				{
+					"armor_class" : bonus
+				}
+			);
+		});
+	};
+	
+	var setUpMeleeAttackBonusField = function(){
+		getAttrs(["strength_bonus", "level"], function(values){
+			var attackBonus = (parseInt(values.strength_bonus)+parseInt(values.level));
+			setAttrs(
+				{
+					"melee_attack_bonus" : attackBonus
+				}
+			);
+		});
+	};
+	
+	var setUpMissileAttackBonusField = function(){
+		getAttrs(["dexterity_bonus", "level"], function(values){
+			var attackBonus = (parseInt(values.dexterity_bonus)+parseInt(values.level));
+			setAttrs(
+				{
+					"missile_attack_bonus" : attackBonus
+				}
+			);
+		});
+	};
+	
+	
+	
+	var setUpStrengthField = function(){
 		getAttrs(["strength","strength_modifier","race"], function(attribute){
 			var current = attribute.strength+attribute.strength_modifier;
 			if (attribute.race=="dwarf" || attribute.race=="lizardman"){
@@ -786,7 +945,7 @@
 		});
 	};
 	
-	var calculateDex = function(){
+	var setUpDexField = function(){
 		getAttrs(["dexterity","dexterity_modifier","race"], function(attribute){
 			var current = attribute.dexterity+attribute.dexterity_modifier;
 			if (attribute.race=="gnome"||attribute.race=="halfelf"){
@@ -804,7 +963,7 @@
 		});
 	};
 	
-	var calculateMind = function(){
+	var setUpMindField = function(){
 		getAttrs(["mind","mind_modifier","race"], function(attribute){
 			var current = attribute.mind+attribute.mind_modifier;
 			if (attribute.race=="gnome"){
@@ -824,7 +983,7 @@
 		});
 	};
 
-	var calculatePhysical = function(){
+	var setUpPhysicalField = function(){
 		getAttrs(["physical_mod", "level", "class", "race"], function(value){
 			var skill = value.level+value.physical_mod;
 			if (value.class=="fighter"){
@@ -843,7 +1002,7 @@
 		});
 	};
 	
-	var calculateSubterfuge = function(){
+	var setUpSubterfugeField = function(){
 		getAttrs(["subterfuge_mod", "level", "class", "race"], function(value){
 			var sub = value.level+value.subterfuge_mod;
 			if (value.class=="rogue"){
@@ -864,7 +1023,7 @@
 		});
 	};
 	
-	var calculateKnowledge = function(){
+	var setUpKnowledgeField = function(){
 		getAttrs(["knowledge_mod", "level", "class", "race"], function(value){
 			var sub = value.level+value.knowledge_mod;
 			if (value.class=="mage"){
@@ -885,7 +1044,7 @@
 	
 	
 	
-	var calculateCommunication = function(){
+	var setUpCommunicationField = function(){
 		getAttrs(["communication_mod", "level", "class", "race"], function(value){
 			var sub = value.level+value.communication_mod;
 			if (value.class=="cleric"){
@@ -906,7 +1065,7 @@
 		});
 	};
 	
-	var calculateSurvival = function(){
+	var setUpSurvivalField = function(){
 		getAttrs(["survival_mod", "level", "class", "race"], function(value){
 			var sub = value.level+value.survival_mod;
 			if (value.class=="ranger"){
@@ -925,19 +1084,103 @@
 		});
 	};
 	
-	var calculateAttacks = function(){
-		calculateAttackRolls();
-		calculateDamageRolls();
+	var setUpInitiativeRoll = function(){
+		/**
+			&{template:default} {{name=Initiative Roll}} {{Roll Result=[[d20+[[(@{dexterity_bonus})]] &{tracker}]]}}
+		*/
+		getAttrs(["dexterity_bonus"], function(values){
+			var output = "&{template:default} "+
+			"{{name=Initiative Roll}} "+
+			"{{Roll Result=[[d20+"+values.dexterity_bonus+" &{tracker}]]}} {{Logic=d20 + dex bonus}}";
+			setAttrs(
+				{
+					"initiative_roll" : output
+				}
+			);
+		};
+			
 	};
 	
-	var calculateAttackRolls = function(){
-		calculateMeleeRolls();
-		calculateMissileRolls();
-		calculateLightWeaponRolls();
-		calculateDualWieldRolls();
+	var setUpFortitudeSaveThrowRoll = function(){
+		/**
+		"&{template:default} {{name=Fortitude Save }} {{Roll Result=[[d20+[[(@{physical_current})]]+[[(@{strength_bonus})]]+[[(floor(@{race}))]]+[[((floor(abs((-2+@{class}))/16))*(1+floor(@{level}/5)))]]]]}}" title="d20 + physical rank + strength bonus + human racial bonus + paladin bonus"
+		*/
+		getAttrs(["physical_current", "strength_bonus", "class", "level"], function(values){
+			var output = "&{template:default} {{name=Fortitude Save }}" + 
+			"{{Roll Result= [[d20+"+values.physical_current+"+"+values.strength_bonus;
+			if (values.class=="paladin"){
+				var bonus = (1+Math.floor(parseInt(values.level)/5));
+				output+="+"+bonus;
+			}
+			output+="}} {{Logic=d20 + physical rank + strength bonus";
+			if (values.class=="paladin"){
+				output+=" + paladin bonus";
+			}
+			output+=" }}";
+			setAttrs(
+				{
+					"fortitude_save_roll" : output
+				}
+			);
+		});
 	};
 	
-	var calculateDamageRolls = function(){
+	var setUpReflexSaveThrowRoll = function(){
+		getAttrs(["physical_current", "dexterity_bonus", "class", "level"], function(values){
+			var output = "&{template:default} {{name=Reflex Save }}" + 
+			"{{Roll Result= [[d20+"+values.physical_current+"+"+values.dexterity_bonus;
+			if (values.class=="paladin"){
+				var bonus = (1+Math.floor(parseInt(values.level)/5));
+				output+="+"+bonus;
+			}
+			output+="}} {{Logic=d20 + physical rank + dexterity bonus";
+			if (values.class=="paladin"){
+				output+=" + paladin bonus";
+			}
+			output+=" }}";
+			setAttrs(
+				{
+					"reflex_save_roll" : output
+				}
+			);
+		});
+	};
+	
+	var setUpWillSaveThrowRoll = function(){
+		getAttrs(["race", "mind_bonus", "class", "level"], function(values){
+			var output = "&{template:default} {{name=Will Save }}" + 
+			"{{Roll Result= [[d20+"+values.mind_bonus+"+"+values.level;
+			if (values.race=="human"){
+				//I checked with the Microlite20 community here...
+				//While a Will Save isn't technically a "skill roll"
+				//that would benefit from the human +1 bonus, 
+				//the other 2 saving throws are, and it's
+				//unbalanced to have 2 saving throws with a bonus
+				//while another does not.  And so: the bonus is
+				//added here.
+				output+="+1";
+			}
+			if (values.class=="paladin"){
+				var bonus = (1+Math.floor(parseInt(values.level)/5));
+				output+="+"+bonus;
+			}
+			output+="}} {{Logic=d20 + mind bonus + level";
+			if (values.race=="human"){
+				output+=" + human racial bonus";
+			}
+			if (values.class=="paladin"){
+				output+=" + paladin bonus";
+			}
+			output+=" }}";
+			setAttrs(
+				{
+					"reflex_save_roll" : output
+				}
+			);
+		});
+	};
+	
+	var setUpDamageRolls = function(){
 		/**
 			damage dice + fighter class bonus + melee bonus + ranger class bonus + miscellaneous damage modifier
 			damageRoll = &{template:default} {{name=Damage Roll}} {{@{weapon_name}=[[@{damage_dice}+[[((floor(abs(@{class})/16))*(1+floor(@{level}/5)))]]+[[((floor((@{range_type})/2))*(@{strength_bonus}))]]+[[((abs(@{class}%2))*(@{range_type}%2))]]+[[(@{damage_mod})]]]]}}
@@ -961,7 +1204,7 @@
 								damageRoll+="+"+(stats.strength_bonus*2);
 							}
 						}
-						damageRoll+="+"+weaponAttributes[weapon+"_damage_mod"];
+						damageRoll+="+"+weaponAttributes[weapon+"_damage_mod"]+"]]}}";
 						setAttrs(
 							{
 								weapon+"_damageRoll": damageRoll
@@ -973,32 +1216,150 @@
 		});
 	};
 	
-	var calculateMeleeRolls = function(){
+	var setUpMeleeRolls = function(){
 		/**
 			d20 + melee attack bonus + fighter class bonus + miscellaneous weapon modifier
 			meleeRoll = &{template:default} {{name=Melee Attack Roll}} {{Roll Result=[[d20+[[(@{melee_attack_bonus})]]+[[((floor(abs(@{class})/16))*(1+floor(@{level}/5)))]]+[[(@{weapon_mod})]]]]}}
 		*/
+		
+		getAttrs(["class", "level", "melee_attack_bonus"], function(stats){
+			getSectionIDs("repeating_weapons", function(ids){
+				for (var i=0; i<ids.length; i++){
+					var weapon = "repeating_weapons_"+ids[i];
+					var range_type = weaponAttributes[weapon+"_range_type"];
+					getAttrs([weapon+"_weapon_mod", weapon+"_weapon_name"], function(weaponAttributes){
+						var meleeRoll = "&{template:default} {{name=Melee Attack Roll}} {{weapon="+weaponAttributes[weapon+"weapon_name"]+"}} {{Roll Result=[[d20+"+stats.melee_attack_bonus";
+						if (stats.class=="fighter"){
+							meleeRoll+="+[[(1+floor("+stats.level+"/5))]]";
+						} 
+						meleeRoll+="+"+weaponAttributes[weapon+"_weapon_mod"]+"]]}}";
+						setAttrs(
+							{
+								weapon+"_meleeRoll": meleeRoll
+							}
+						);
+					});
+				}
+			});
+		});
 	};
 	
-	var calculateMissileRolls = function(){
+	var setUpMissileRolls = function(){
 		/**
 			d20+missile/ranged attack bonus + fighter class bonus + ranger class bonus + miscellaneous weapon modifier
 			missileRoll = &{template:default} {{name=Missile/Ranged Roll}}{{Roll Result=[[d20+[[(@{missile_attack_bonus})]] + [[((floor(abs(@{class})/16))*(1+floor(@{level}/5)))+((abs(@{class}%2)))]]+[[(@{weapon_mod})]]]]}}
 		*/
+		getAttrs(["class", "level", "missile_attack_bonus"], function(stats){
+			getSectionIDs("repeating_weapons", function(ids){
+				for (var i=0; i<ids.length; i++){
+					var weapon = "repeating_weapons_"+ids[i];
+					var range_type = weaponAttributes[weapon+"_range_type"];
+					getAttrs([weapon+"_weapon_mod", weapon+"_weapon_name"], function(weaponAttributes){
+						var missileRoll = "&{template:default} {{name=Ranged Attack Roll}} {{weapon="+weaponAttributes[weapon+"weapon_name"]+"}} {{Roll Result=[[d20+"+stats.missile_attack_bonus";
+						if (stats.class=="fighter"){
+							missileRoll+="+[[(1+floor("+stats.level+"/5))]]";
+						} else if (stats.class=="ranger"){
+							missileRoll+="+1";
+						}
+						missileRoll+="+"+weaponAttributes[weapon+"_weapon_mod"]+"]]}}";
+						setAttrs(
+							{
+								weapon+"_missileRoll": missileRoll
+							}
+						);
+					});
+				}
+			});
+		});
 	};
 	
-	var calculateLightWeaponRolls = function(){
+	var setUpLightWeaponRolls = function(){
 		/**
 			d20 + light weapon attack bonus + fighter class bonus + miscellaneous weapon modifier
 			lightWeaponRoll = &{template:default} {{name=Light Weapon Roll}} {{Roll Result=[[d20+[[(@{missile_attack_bonus})]]+[[((floor(abs(@{class})/16))*(1+floor(@{level}/5)))]]+[[(@{weapon_mod})]]]]}}
 		*/
+		getAttrs(["class", "level", "missile_attack_bonus"], function(stats){
+			getSectionIDs("repeating_weapons", function(ids){
+				for (var i=0; i<ids.length; i++){
+					var weapon = "repeating_weapons_"+ids[i];
+					var range_type = weaponAttributes[weapon+"_range_type"];
+					getAttrs([weapon+"_weapon_mod", weapon+"_weapon_name"], function(weaponAttributes){
+						var lightWeaponRoll = "&{template:default} {{name=Light Melee Attack Roll}} {{weapon="+weaponAttributes[weapon+"weapon_name"]+"}} {{Roll Result=[[d20+"+stats.missile_attack_bonus";
+						if (stats.class=="fighter"){
+							lightWeaponRoll+="+[[(1+floor("+stats.level+"/5))]]";
+						} 
+						lightWeaponRoll+="+"+weaponAttributes[weapon+"_weapon_mod"]+"]]}}";
+						setAttrs(
+							{
+								weapon+"_lightWeaponRoll": lightWeaponRoll
+							}
+						);
+					});
+				}
+			});
+		});
 	};
 	
-	var calculateDualWieldRolls = function(){
+	var setUpDualWieldRolls = function(){
 		/**
 			d20 + light weapon attack bonus + fighter class bonus + ranger class bonus - attack penalty + miscellaneous weapon modifier
 			dualWieldRoll = &{template:default} {{name=Dual Wield Roll}} {{Roll Result=[[d20+[[(@{missile_attack_bonus})]]+[[((floor(abs(@{class})/16))*(1+floor(@{level}/5)))+((abs(@{class}%2)))]]-2+[[(@{weapon_mod})]]]]}}
 		*/
+		getAttrs(["class", "level", "missile_attack_bonus"], function(stats){
+			getSectionIDs("repeating_weapons", function(ids){
+				for (var i=0; i<ids.length; i++){
+					var weapon = "repeating_weapons_"+ids[i];
+					var range_type = weaponAttributes[weapon+"_range_type"];
+					getAttrs([weapon+"_weapon_mod", weapon+"_weapon_name"], function(weaponAttributes){
+						var dualWieldRoll = "&{template:default} {{name=Dual Wield Attack Roll}} {{weapon="+weaponAttributes[weapon+"weapon_name"]+"}} {{Roll Result=[[d20+"+stats.missile_attack_bonus";
+						if (stats.class=="fighter"){
+							dualWieldRoll+="+[[(1+floor("+stats.level+"/5))]]";
+						} else if (stats.class=="ranger"){
+							dualWieldRoll+="+1";
+						}
+						dualWieldRoll+="-2+"+weaponAttributes[weapon+"_weapon_mod"]+"]]}}";
+						setAttrs(
+							{
+								weapon+"_dualWieldRoll": dualWieldRoll
+							}
+						);
+					});
+				}
+			});
+		});
+	};
+	
+	var setUpStrengthRoll = function(){
+		getAttrs(["strength_bonus"], function(values){
+			var output = "&{template:default} {{name=Strength Roll}}{{Roll Result=[[d20+"+values.strength_bonus+"]]}} {{Strength Bonus="+values.strength_bonus+"}}";
+			setAttrs(
+				{
+					"strength_roll" : output
+				}
+			);
+		});
+	};
+
+	var setUpDexRoll = function(){
+		getAttrs(["dexterity_bonus"], function(values){
+			var output = "&{template:default} {{name=Dexterity Roll}}{{Roll Result=[[d20+"+values.dexterity_bonus+"]]}} {{Dexterity Bonus="+values.dexterity_bonus+"}}";
+			setAttrs(
+				{
+					"dexterity_roll" : output
+				}
+			);
+		});
+	};
+
+	var setUpMindRoll = function(){
+		getAttrs(["mind_bonus"], function(values){
+			var output = "&{template:default} {{name=Mind Roll}}{{Roll Result=[[d20+"+values.mind_bonus+"]]}} {{Mind Bonus="+values.strength_bonus+"}}";
+			setAttrs(
+				{
+					"mind_roll" : output
+				}
+			);
+		});
 	};
 
 </script>
